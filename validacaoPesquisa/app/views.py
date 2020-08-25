@@ -12,7 +12,11 @@ def cadastrar_carro(request, template_name='carro_form.html'):
     return render(request, template_name, {'form': form})
 
 def listar_carro(request, template_name='carro_list.html'):
-    carros = Carro.objects.all()
+    query = request.GET.get("busca")
+    if query:
+        carros = Carro.objects.filter(modelo__icontains=query)
+    else:
+        carros = Carro.objects.all()
     return render(request, template_name, {'carros': carros})
 
 def editar_carro(request,pk, template_name='carro_form.html'):
